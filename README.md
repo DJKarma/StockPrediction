@@ -7,10 +7,10 @@ just trying out a script to predict stock
 
 *TODO - 
 
-One day prediction
-LSTM
-Month prediction
-Tunning parameters
-Automating
-WEb interface
-Server and data management
+*One day prediction
+*LSTM
+*Month prediction
+*Tunning parameters
+*Automating
+*WEb interface
+*Server and data management
