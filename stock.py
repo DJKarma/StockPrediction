@@ -22,20 +22,36 @@ import quandl
 
 #quandl jindabad
 quandl.ApiConfig.api_key = 'x-vs8Xt3nEVhQUbcFsMs'
-df = quandl.get('NSE/TATAMOTORS', start_date='2000-01-01', end_date='2018-05-10')
+df = quandl.get('NSE/SBIN', start_date='2000-01-01', end_date='2018-05-31')
 df = df.reset_index()
 df=df.drop(['Last','Total Trade Quantity','Turnover (Lacs)'], axis=1)
-#df.reset_index(inplace=False)
-df.head(50)
+df.head(10)
+df.tail(10)
+df['Date'] = pd.to_datetime(df['Date'])
+df=np.asarray(df)
+df['Date'] = pd.to_datetime(df['Date'])
 
-df
 
-plt.figure(figsize = (18,9))
+plt.figure(figsize = (9,6))
 plt.plot(range(df.shape[0]),(df['Low']+df['High'])/2.0)
 plt.xticks(range(0,df.shape[0],500),df['Date'].loc[::500],rotation=45)
 plt.xlabel('Date',fontsize=18)
 plt.ylabel('Mid Price',fontsize=18)
 plt.show()
+
+
+from statsmodels.tsa.arima_model import ARIMA
+model = ARIMA(df['Close'].values, order=(5,3,1))
+model_fit = model.fit(disp=0)
+print(model_fit.summary())
+print(ARIMA.score)
+forecast = model_fit.forecast()
+forecast
+
+from pandas import datetime
+start_index = datetime(2018, 5, 31)
+end_index = datetime(2018, 6, 5)
+forecast = model_fit.predict(start=start_index, end=end_index)
 
 
 # First calculate the mid prices from the highest and lowest 
